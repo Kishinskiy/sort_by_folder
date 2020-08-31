@@ -3,11 +3,14 @@ import shutil
 import zipfile
 from tqdm import tqdm
 
-from options import Options as ops
+import argparse
 
+parser = argparse.ArgumentParser()
+parser.add_argument("folder", help="folder with zip files", type=str)
+args = parser.parse_args()
 
 def sort_files():
-    for root, _, files in os.walk(os.path.abspath(ops.files_path), topdown=False):
+    for root, _, files in os.walk(os.path.abspath(args.folder), topdown=False):
         files.sort()
         for name in tqdm(files):
             folder_name = os.path.join(name[0])
@@ -30,7 +33,7 @@ def sort_dirs(path, arg):
 
 
 def unzip_files():
-    for root, dirs, files in os.walk(os.path.abspath(ops.files_path), topdown=False):
+    for root, dirs, files in os.walk(os.path.abspath(args.folder), topdown=False):
         for name in tqdm(files):
                 try:
                     with zipfile.ZipFile(root + "/" + name, 'r') as zip_ref:
